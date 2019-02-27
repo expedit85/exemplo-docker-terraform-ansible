@@ -11,3 +11,9 @@ docker build . -t sample-api
 cd ..
 
 
+
+cd proxy
+docker build . -t sample-proxy
+cd ..
+
+

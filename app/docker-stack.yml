@@ -14,4 +14,10 @@ services:
       - 8080:8080   # necessario apenas para teste localhost
     environment:
       NODEJS_API_PORT: 8080
+    deploy:
+      replicas: 3
 
+  proxy:
+    image: sample-proxy:latest
+    ports:
+      - 80:80
