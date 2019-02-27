@@ -2,8 +2,16 @@ version: '3.1'
 
 services:
   db:
-    image: sample-db
-    restart: always
+    image: sample-db:latest
+    ports:
+      - 3306:3306   # necessario apenas para teste localhost
     environment:
       MYSQL_ROOT_PASSWORD: 123456
+
+  api:
+    image: sample-api:latest
+    ports:
+      - 8080:8080   # necessario apenas para teste localhost
+    environment:
+      NODEJS_API_PORT: 8080
 

@@ -7,7 +7,7 @@ if (!port) {
     port = 8888;
 }
 var connection = mysql.createConnection({
-	host: 'localhost',
+	host: 'db',  // alterado para apontar para o container do mysql
 	user: 'notes-api',
 	password: 'notes-api'
 });
