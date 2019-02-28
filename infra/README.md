@@ -63,9 +63,11 @@ Execute os comandos em um terminal no mesmo diretório deste README:
 chmod 400 keys/sample-key-pair    # define permissões da chave privada
 
 cd terraform/cluster
+terraform init
 terraform apply                   # cria máquina na AWS
 
 cd ../inventory           # cria inventário de máquinas para o ansible
+terraform init
 terraform apply
 terraform output inventory > ../../state/hosts
 
