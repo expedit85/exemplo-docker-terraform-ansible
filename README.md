@@ -2,10 +2,14 @@
 
 Exemplo de aplicação API REST com docker, terraform e ansible na AWS.
 
+***Atenção:*** a pasta `infra/keys` contém chaves privadas apenas para teste. Em um ambiente real, novas chaves devem ser geradas e o repositório deve ser mantido privado ou novas chaves devem ser mantidas em um *vault*.
+
+
 ## Clonando
 
 ```
-git clone <URL> <PATH>   # substitua <URL> e <PATH>
+# substitua <URL> e <PATH>
+git clone <URL> <PATH>
 cd <PATH>
 ```
 
