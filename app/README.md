@@ -1,7 +1,33 @@
-# title 1
+# Aplicação API REST básica
+
+Esta documentação fornece instruções para iniciar o serviços em ambiente local.
+
+
+## Pré-requisitos:
+
+- docker >= 17.10 (informações para instalação na próxima seção)
+
+
+## Configuração da máquina local
+
+
+### Instalando docker no Debian/Ubuntu/Mint:
+
+Versões mais recentes já possuem o pacote docker.io v18.06.
+
+```
+sudo apt-get update &&
+sudo apt-get -y install docker.io &&
+docker version
+```
+
+Para outras distros veja [este link](https://docs.docker.com/install/linux/docker-ce/debian/#install-docker-ce).
+
 
 
 ## Comandos básicos para localhost
+
+Executar em um terminal no mesmo diretório deste README.
 
 
 ### Para subir serviços
@@ -12,10 +38,11 @@ bash build.sh
 docker stack deploy -c docker-stack.yml  project
 ```
 
-### Para listar serviços
+### Para listar serviços e containers
 
 ```
 docker service ls
+docker ps
 ```
 
 
@@ -28,46 +55,18 @@ docker service logs -f project_proxy
 ```
 
 
+### Testes
+
+```
+cd ../teste
+bash teste.sh localhost db api proxy
+```
+
+
+
 ### Para parar serviços
 
 ```
 docker stack rm project 
-```
-
-
-## Testes
-
-- Mysql:
-
-```
-# mostra nome da tabela Note
-mysql -u notes-api -pnotes-api -h 127.0.0.1 notes <<< "show tables;"
-```
-
-- API em Node.js:
-
-```
-curl -v 'http://127.0.0.1:8080/notes'
-```
-
-
-
-- Proxy Nginx:
-
-```
-# falha pois valor da anotação não foi enviado
-curl -v -X POST  'http://localhost/notes'
-
-# lista vazia, cria, lista com 1 item
-curl -v 'http://localhost/notes'
-curl -v -X POST -d 'hello world' 'http://localhost/notes' 
-curl -v 'http://localhost/notes'
-
-# remove e lista vazia
-curl -v -X DELETE  'http://localhost/notes/1'
-curl -v 'http://localhost/notes'
-
-# falha, pois item não existe
-curl -v -X DELETE  'http://localhost/notes/1'
 ```
 

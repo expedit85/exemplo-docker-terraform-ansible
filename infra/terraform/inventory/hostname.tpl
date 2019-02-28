@@ -1,0 +1,1 @@
+${name}-${format("%02s",index)} ansible_host=${host} ${extra}

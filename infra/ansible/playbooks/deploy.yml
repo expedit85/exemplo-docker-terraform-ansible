@@ -1,0 +1,58 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: primary
+  become: true
+  gather_facts: False
+
+  tasks:
+    - set_fact:
+        timestamp: "{{ lookup('pipe', 'date +%Y%m%d-%H%M%S') }}"
+
+    - set_fact:
+        app_dir: "/root/app/{{timestamp}}/"
+
+    - name: Creates directory
+      file:
+        path: "{{app_dir}}"
+        state: directory
+
+    - name: Copying app sources to remote machine
+      synchronize:
+        src: ../../../app/
+        dest: "{{app_dir}}"
+        recursive: yes
+
+    - shell: find {{app_dir}}
+      name: find
+      register: find
+
+    - debug:
+        var: find.stdout_lines
+
+    - name: Building image for mysql database (may last long)
+      docker_image:
+        state: present
+        name: sample-db
+        force: yes
+        path: "{{app_dir}}/db"
+
+    - name: Building image for API (may last long)
+      docker_image:
+        state: present
+        name: sample-api
+        force: yes
+        path: "{{app_dir}}/api"
+
+    - name: Building image for nginx reverse proxy (may last long)
+      docker_image:
+        state: present
+        name: sample-proxy
+        force: yes
+        path: "{{app_dir}}/proxy"
+
+    - name: Start the services with docker stack
+      shell: docker stack deploy -c docker-stack.yml  project
+      args:
+        chdir: "{{app_dir}}"
+
+

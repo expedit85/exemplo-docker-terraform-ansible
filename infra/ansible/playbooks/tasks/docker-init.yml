@@ -1,0 +1,42 @@
+- name: Ensure docker swarm is active
+  become: true
+  docker_swarm:
+    state: present
+
+- name: Inspect swarm
+  become: true
+  docker_swarm:
+    state: inspect
+  register: swarm_info
+
+
+- name: Save hostvars locally (this task shall be removed)
+  become: false
+  local_action:
+    module: copy
+    content: "{{ hostvars }}"
+    dest: ../state/hostvars.json
+
+
+- name: Save swarm manager join token locally
+  become: false
+  local_action:
+    module: copy
+    content: "{{ swarm_info['swarm_facts']['JoinTokens']['Manager'] }}"
+    dest: ../state/manager-join-token
+
+
+- name: Save swarm worker join token locally
+  become: false
+  local_action:
+    module: copy
+    content: "{{swarm_info['swarm_facts']['JoinTokens']['Worker']}}"
+    dest: ../state/worker-join-token
+
+
+- name: Save swarm leader address locally
+  become: false
+  local_action:
+    module: copy
+    content: "{{ ansible_default_ipv4['address'] }}"
+    dest: ../state/manager-ipv4-addr

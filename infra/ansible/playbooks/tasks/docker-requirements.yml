@@ -1,0 +1,14 @@
+- name: Ensure apt requirements are installed
+  become: true
+  apt:
+    pkg:
+      - python-pip
+      - python3-pip
+      - python-setuptools
+      - python3-setuptools
+
+- name: Ensure pip requirements are installed
+  become: true
+  pip:
+    name:
+      - docker

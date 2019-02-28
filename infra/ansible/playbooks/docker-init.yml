@@ -1,0 +1,8 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: primary
+
+  tasks:
+    - include_tasks: tasks/docker-requirements.yml
+    - include_tasks: tasks/docker-init.yml
+
