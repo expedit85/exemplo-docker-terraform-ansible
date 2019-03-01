@@ -1,4 +1,5 @@
 FROM mariadb:10.1.21
+# FROM mysql:8.0.15
 
 # Defaults for database name, user, passwords.
 # Podem ser sobrescritas no docker-stack.yml

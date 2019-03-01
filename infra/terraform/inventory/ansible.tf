@@ -19,7 +19,7 @@ locals {
 data "template_file" "hostname" {
     template = "${file("${path.module}/hostname.tpl")}"
     vars = {
-        name  = "proxy"
+        name  = "server"
         index = 1
         host  = "${local.public_address}"
         extra = ""

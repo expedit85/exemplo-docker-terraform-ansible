@@ -1,0 +1,10 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: all
+  gather_facts: False
+
+  tasks:
+    - name: Truncate mysql database on {{inventory_hostname}}
+      shell: echo 'truncate table Note;' | docker exec -i $(docker ps --filter name=db -q)   mysql -N -u notes-api -pnotes-api -h 127.0.0.1 notes
+      become: "{{ False if inventory_hostname == '127.0.0.1' else True }}"
+

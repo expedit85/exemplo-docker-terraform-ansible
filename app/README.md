@@ -11,9 +11,9 @@ Esta documentação fornece instruções para iniciar o serviços em ambiente lo
 ## Configuração da máquina local
 
 
-### Instalando docker no Debian/Ubuntu/Mint:
+### Instalando docker no Ubuntu/Mint:
 
-Versões mais recentes já possuem o pacote docker.io v18.06.
+Versões mais recentes do **Mint** ou **Ubuntu** já possuem o pacote docker.io v18.06.
 
 ```
 sudo apt-get update &&
@@ -21,8 +21,12 @@ sudo apt-get -y install docker.io &&
 docker version
 ```
 
-Para outras distros veja [este link](https://docs.docker.com/install/linux/docker-ce/debian/#install-docker-ce).
+Para outras distros, use o script para instalação em ambientes de teste ou veja [este link](https://docs.docker.com/install/):
 
+```
+sudo apt-get install curl &&
+curl -fsSL https://get.docker.com | sh
+```
 
 
 ## Comandos básicos para localhost
@@ -33,9 +37,9 @@ Executar em um terminal no mesmo diretório deste README.
 ### Para subir serviços
 
 ```
-docker swarm init
-bash build.sh
-docker stack deploy -c docker-stack.yml  project
+sudo docker swarm init --advertise-addr 127.0.0.1
+sudo bash build.sh
+sudo docker stack deploy -c docker-stack.yml  project
 ```
 
 ### Para listar serviços e containers
@@ -59,9 +63,11 @@ docker service logs -f project_proxy
 
 ```
 cd ../teste
-bash teste.sh localhost db api proxy
+sudo apt-get install curl apache2-utils
+bash teste.sh localhost
 ```
 
+Mais detalhes no [README da pasta teste/](../teste/README.md).
 
 
 ### Para parar serviços

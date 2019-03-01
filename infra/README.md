@@ -1,6 +1,6 @@
 # Provisionamento e configuração de aplicação na AWS
 
-Esta documentação fornece instruções para iniciar o serviços na AWS usando terraform e ansible.
+Esta documentação fornece instruções para executar a aplicação com docker em uma instância na AWS. Para isso, usa terraform e ansible localmente.
 
 
 ## Pré-requisitos:
@@ -14,7 +14,7 @@ Esta documentação fornece instruções para iniciar o serviços na AWS usando 
 ## Configuração da máquina de controle
 
 
-### Instalando ansible no Debian/Ubuntu/Mint:
+### Instalando ansible no Ubuntu/Mint:
 
 ```
 sudo apt-get update &&
@@ -28,24 +28,28 @@ ansible --version
 Para outras distros veja [este link](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-machine).
 
 
-### Instalando terraform no Debian/Ubuntu/Mint:
+### Instalando terraform no Ubuntu/Mint:
 
 Basta efetuar download e descompactar o executável em uma pasta acessível.
 
 ```
-wget 'https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip'
-unzip terraform_0.11.11_linux_amd64.zip
-sudo ln -s "$(pwd)/terraform" /usr/local/bin/
+sudo apt-get -y install wget unzip &&
+wget 'https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip' &&
+unzip terraform_0.11.11_linux_amd64.zip &&
+sudo ln -sf "$(pwd)/terraform" /usr/local/bin/ &&
 terraform -v
 ```
 
 Para outras distros veja [este link](https://learn.hashicorp.com/terraform/getting-started/install).
 
+
 ## Provisionamento e configuração na AWS
+
+Instruções para configurar chaves de segurança, provisionar recursos na AWS e instalar docker e efetuar deploy.
 
 ### Chaves de acesso
 
-Crie o arquivo `terraform/cluster/terraform.auto.tfvars` para armazenar as chaves de acesso ao AWS:
+Tomando por base o diretório deste README, crie o arquivo `terraform/cluster/terraform.auto.tfvars` para armazenar as chaves de acesso ao AWS:
 
 ```
 aws_access_key = "SUA-CHAVE-DE-ACESSO-AQUI"
@@ -60,7 +64,8 @@ Obs.: este arquivo é sigiloso e não será versionado.
 Execute os comandos em um terminal no mesmo diretório deste README:
 
 ```
-chmod 400 keys/sample-key-pair    # define permissões da chave privada
+# gera chave SSH
+ssh-keygen -q -t rsa -C sample-key-pair -N '' -f keys/sample-key-pair
 
 cd terraform/cluster
 terraform init
@@ -77,7 +82,7 @@ playbooks/docker-init.yml     # inicializa docker na máquina remota
 playbooks/deploy.yml          # efetua deploy da aplicação na AWS
 ```
 
-Obs: `terraform apply` pode solicitar confirmação via teclado.
+Obs: `terraform apply` solicita confirmação via teclado.
 
 
 ## Testando o ambiente
@@ -86,8 +91,11 @@ Execute os comandos em um terminal no mesmo diretório deste README:
 
 ```
 cd ../teste
-bash teste.sh remotehost db api proxy
+sudo apt-get install curl apache2-utils
+bash teste.sh remotehost
 ```
+
+Mais detalhes no [README da pasta teste/](../teste/README.md).
 
 
 ## Destruindo o ambiente
@@ -99,4 +107,7 @@ cd terraform/cluster
 terraform destroy
 cd -
 rm state/*
+rm keys/*
 ```
+
+Obs: `terraform destroy` solicita confirmação via teclado.

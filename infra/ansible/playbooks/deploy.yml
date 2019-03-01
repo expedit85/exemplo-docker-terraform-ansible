@@ -50,7 +50,7 @@
         force: yes
         path: "{{app_dir}}/proxy"
 
-    - name: Start the services with docker stack
+    - name: Starting the services with docker stack
       shell: docker stack deploy -c docker-stack.yml  project
       args:
         chdir: "{{app_dir}}"

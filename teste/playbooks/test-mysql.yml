@@ -1,0 +1,28 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: all
+  gather_facts: False
+
+  tasks:
+    - debug:
+        var: inventory_hostname
+      name: show inventory_hostname value
+
+    - wait_for:
+        host: 0.0.0.0
+        port: 3306
+        timeout: 10
+        msg: Could not connect to mysql
+      name: Wait for mysql on port 3306 (timeout=10s)
+
+    - name: Test mysql connectivity inside database container
+      shell: echo 'show tables;' | docker exec -i $(docker ps --filter name=db -q)   mysql -N -u notes-api -pnotes-api -h 127.0.0.1 notes
+      become: "{{ False if inventory_hostname == '127.0.0.1' else True }}"
+      register: mysql_output
+
+    - debug: var=mysql_output
+
+    - name: Test mysql 'show tables' result
+      fail:
+        msg: Verifying query result
+      when: mysql_output.stdout != "Note"

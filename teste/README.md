@@ -1,54 +1,43 @@
-# TODO
+# Scripts para teste automatizado da aplicação
 
-TODO
+Este documento contém instruções de demonstração de testes automatizados. Foi construído um shell script que usa curl para requisições específicas e Apache Benchmark para um pequeno teste de performance.
 
-## TODO
+O teste inclui algumas inserções, deleções e listagens. Inserções com valor vazio e maior que o tamanho limite do campo da tabela no banco de dados.
 
-### Mysql:
+Em uma das inserções de teste, notou-se que a API permite a inserção de uma anotação vazia ao enviar o valor `=` para `POST /notes`.
 
-```
-# mostra nome da tabela Note
-mysql -u notes-api -pnotes-api -h 127.0.0.1 notes <<< "show tables;"
-```
-
-### API em Node.js:
-
-```
-curl -v 'http://127.0.0.1:8080/notes'
-```
+Em outra inserção, notou-se que a API permite a inserção de uma anotação que extrapola o limite do tamanho da coluna.
 
 
+## Pré-requisitos
 
-### Proxy Nginx:
+- curl
+- ab (Apache Benchmark)
+
+### Instalação no Ubuntu/Mint
 
 ```
-# falha pois valor da anotação não foi enviado
-curl -v -X POST  'http://localhost/notes'
-
-# lista vazia, cria, lista com 1 item
-curl -v 'http://localhost/notes'
-curl -v -X POST -d 'hello world' 'http://localhost/notes' 
-curl -v 'http://localhost/notes'
-
-# remove e lista vazia
-curl -v -X DELETE  'http://localhost/notes/1'
-curl -v 'http://localhost/notes'
-
-# falha, pois item não existe
-curl -v -X DELETE  'http://localhost/notes/1'
+sudo apt-get install curl apache2-utils
 ```
 
 
 
-```
-IP=$(cd ../infra/terraform/cluster > /dev/null; terraform output public_ip)
-curl -v 'http://${IP}/notes'
-curl -v -X POST 'http://${IP}/notes'
+## Teste da aplicação na máquina local
 
-curl -v 'http://${IP}/notes'|jq .
-curl -v -X POST -d'foo=meu texto' 'http://${IP}/notes'
-curl -v 'http://${IP}/notes'|jq .
+Execute o comando a seguir caso tenha seguido os passos [do README da pasta app/](../app/README.md).
 
-curl -v -X POST -d'nome da chave=meu texto' 'http://${IP}/notes'
-curl -v 'http://${IP}/notes'|jq .
 ```
+bash teste.sh localhost
+```
+
+
+
+## Teste da aplicação na máquina remote
+
+Execute o comando a seguir caso tenha seguido os passos [do README da pasta infra/](../infra/README.md).
+
+
+```
+bash teste.sh remotehost
+```
+

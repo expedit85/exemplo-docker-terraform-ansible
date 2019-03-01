@@ -5,6 +5,12 @@ services:
     image: sample-db:latest
     ports:
       - 3306:3306   # necessario apenas para teste localhost
+    # descomentar para manter dados da base ao reiniciar containers
+    # volumes:
+    #   - type: bind
+    #     source: /path/to/datadir
+    #     target: /var/lib/mysql
+    #     read_only: false
     environment:
       MYSQL_ROOT_PASSWORD: 123456
 
