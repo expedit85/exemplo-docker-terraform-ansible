@@ -16,7 +16,7 @@ Esta documentação fornece instruções para iniciar o serviços em ambiente lo
 Versões mais recentes do **Mint** ou **Ubuntu** já possuem o pacote docker.io v18.06.
 
 ```
-sudo apt-get update &&
+sudo apt-get -y update &&
 sudo apt-get -y install docker.io &&
 docker version
 ```
@@ -24,7 +24,7 @@ docker version
 Para outras distros, use o script para instalação em ambientes de teste ou veja [este link](https://docs.docker.com/install/):
 
 ```
-sudo apt-get install curl &&
+sudo apt-get -y install curl &&
 curl -fsSL https://get.docker.com | sh
 ```
 
@@ -37,8 +37,8 @@ Executar em um terminal no mesmo diretório deste README.
 ### Para subir serviços
 
 ```
-sudo docker swarm init --advertise-addr 127.0.0.1
-sudo bash build.sh
+sudo docker swarm init --advertise-addr 127.0.0.1 &&
+sudo bash build.sh &&
 sudo docker stack deploy -c docker-stack.yml  project
 ```
 
@@ -63,7 +63,7 @@ docker service logs -f project_proxy
 
 ```
 cd ../teste
-sudo apt-get install curl apache2-utils jq
+sudo apt-get -y install curl apache2-utils jq
 bash teste.sh localhost
 ```
 

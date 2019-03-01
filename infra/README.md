@@ -42,7 +42,7 @@ Efetuar as ações a seguir em um navegador Web:
 #### Instalando ansible no Ubuntu/Mint:
 
 ```
-sudo apt-get update &&
+sudo apt-get -y update &&
 sudo apt-get -y install software-properties-common &&
 sudo apt-add-repository -y  ppa:ansible/ansible &&
 sudo apt-get -y update &&
@@ -86,7 +86,7 @@ Obs.: este arquivo é sigiloso e não será versionado.
 
 ### Provisionamento, configuração e deploy
 
-Execute os comandos em um terminal no mesmo diretório deste README:
+Execute os comandos, um de cada vez, em um terminal no mesmo diretório deste README:
 
 ```
 # gera chave SSH
@@ -115,8 +115,8 @@ Obs: `terraform apply` solicita confirmação via teclado.
 Execute os comandos em um terminal no mesmo diretório deste README:
 
 ```
-cd ../teste
-sudo apt-get install curl apache2-utils jq
+cd ../teste &&
+sudo apt-get -y install curl apache2-utils jq &&
 bash teste.sh remotehost
 ```
 
@@ -125,7 +125,7 @@ Mais detalhes no [README da pasta teste/](../teste/README.md).
 
 ## Destruindo o ambiente
 
-Execute os comandos em um terminal no mesmo diretório deste README:
+Execute os comandos, um de cada vez, em um terminal no mesmo diretório deste README:
 
 ```
 cd terraform/cluster

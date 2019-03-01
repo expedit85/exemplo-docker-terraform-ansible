@@ -153,7 +153,9 @@ parse-cmdline()
 			local host_addr=127.0.0.1
 			;;
 		remotehost)
+			which terraform >/dev/null || { echo "Terraform não instalado"; exit 1; }
 			local host_addr=$(cd ../infra/terraform/cluster > /dev/null; terraform output public_ip)
+			test -n "$host_addr" || { echo "Endereço IP remoto desconhecido"; exit 1; }
 			;;
 		*)
 			echo "Nome de host inválido:  $hostname"
