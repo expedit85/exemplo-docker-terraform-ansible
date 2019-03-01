@@ -63,7 +63,7 @@ docker service logs -f project_proxy
 
 ```
 cd ../teste
-sudo apt-get install curl apache2-utils
+sudo apt-get install curl apache2-utils jq
 bash teste.sh localhost
 ```
 

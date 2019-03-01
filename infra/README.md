@@ -5,16 +5,41 @@ Esta documentação fornece instruções para executar a aplicação com docker 
 
 ## Pré-requisitos:
 
-- Conta na AWS com "access key" e "secret key"
+- Conta na AWS com *access key* e *secret key* com permissão "ec2:*"
 - Máquina de controle (local):
   - ansible 2.7.8
   - terraform v0.11.11
 
+### Criando e configurando conta na AWS
 
-## Configuração da máquina de controle
+Efetuar as ações a seguir em um navegador Web:
+
+1. Crie conta na AWS e efetue login
+2. Acesse o IAM (Identity and Access Management)
+3. Crie uma política (Policy) com o seguinte conteúdo:
+
+    ```
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": "ec2:*",
+                "Resource": "*"
+            }
+        ]
+    }
+    ```
+
+4. Crie um usuário associado a essa política
+5. Baixe o par de chaves de acesso e segurança gerado (*access and secret keys*)
 
 
-### Instalando ansible no Ubuntu/Mint:
+### Configuração da máquina de controle
+
+
+#### Instalando ansible no Ubuntu/Mint:
 
 ```
 sudo apt-get update &&
@@ -28,7 +53,7 @@ ansible --version
 Para outras distros veja [este link](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-machine).
 
 
-### Instalando terraform no Ubuntu/Mint:
+#### Instalando terraform no Ubuntu/Mint:
 
 Basta efetuar download e descompactar o executável em uma pasta acessível.
 
@@ -43,7 +68,7 @@ terraform -v
 Para outras distros veja [este link](https://learn.hashicorp.com/terraform/getting-started/install).
 
 
-## Provisionamento e configuração na AWS
+## Provisionamento e configuração de instâncias EC2 na AWS
 
 Instruções para configurar chaves de segurança, provisionar recursos na AWS e instalar docker e efetuar deploy.
 
@@ -91,7 +116,7 @@ Execute os comandos em um terminal no mesmo diretório deste README:
 
 ```
 cd ../teste
-sudo apt-get install curl apache2-utils
+sudo apt-get install curl apache2-utils jq
 bash teste.sh remotehost
 ```
 
